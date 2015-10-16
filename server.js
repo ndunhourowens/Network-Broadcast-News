@@ -4,13 +4,20 @@ var data = '';
 var HOST = '0.0.0.0';
 var PORT = '6969';
 
-var server = net.createServer(function(c) { //'connection' listener
+var server = net.createServer(function(socket) { //'connection' listener
+  // event for connection
   console.log('client connected');
-  c.on('end', function() {
+
+  socket.write('hello from server');
+
+
+  socket.on('data', function(data){
+    console.log('Recieved From client: ', data.toString());
+  });
+
+  socket.on('end', function() {
     console.log('client disconnected');
   });
-  c.write('hello\r\n');
-  c.pipe(c);
 });
 server.listen(PORT, function() { //'listening' listener
   console.log('server bound');
